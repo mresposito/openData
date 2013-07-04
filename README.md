@@ -1,4 +1,6 @@
-This is your new Play 2.1 application
+Open Data
 =====================================
 
-This file will be packaged with your application, when using `play dist`.
+The world's most flexible online data dashboard
+
+
