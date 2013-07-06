@@ -8,14 +8,6 @@ import play.api.libs.json.Json
 import play.api.libs.json._
 import com.typesafe.scalalogging.slf4j.Logging
 
-case class Graph (id: Long, userId: Long, name:String, render:String, description: Option[String])
-
-case class NewGraph (name: String, userId: Long, description: Option[String], render:String = "line" )
-
-case class DataPoint(x: String, y: Int, series: Option[String])
-
-case class CreateGraph(graph: NewGraph, data: Option[Seq[DataPoint]])
-
 case class Success(success: String)
 
 object DataFormatter {
@@ -24,19 +16,37 @@ object DataFormatter {
   implicit val newFormatter = Json.format[NewGraph]
   implicit val dataPointFormatter = Json.format[DataPoint]
   implicit val createGraphFormatter = Json.format[CreateGraph]
+  implicit val seriesFormatter = Json.format[Series]
+  implicit val plotFormatter = Json.format[Plot]
 }
 
-
-// @Singleton
-class DataController extends Controller {
+@Singleton
+class DataController @Inject() (dataStore: DataStore) extends Controller {
 
   import DataFormatter._
 
   def Response(message: String) = Ok(Json.toJson(Success(message)))
 
   
-  def get = Action {
-    Ok
+  /**
+   * serves all the graphs for a given user
+   * The return object is a sequence
+   * of plots in JSON
+   */
+  def get(userId: Long) = Action {
+    val graphs = dataStore.getGraphs(userId)
+    val data = graphs.map{ g =>
+      dataStore.getDataPoints(g.id).groupBy(_.series)
+    }
+    val dataSeries = data.map { series =>
+      series.map { case(k,v) =>
+        Series(k.getOrElse(""), v)
+      }
+    }
+    val plots = graphs.zip(dataSeries).map {
+      case(g, d) => Plot(g, d toList)
+    }
+    Ok(Json.toJson(plots))
   }
 
   def post = Action(parse.json) { request =>
@@ -51,15 +61,15 @@ class DataController extends Controller {
 }
 
 // {
-//   "metric": 
+//   "graph": 
 //   {
 //     "name": "class",
 //     "description": "mah"
-//   }
-//   "measure":
-//   {
-//     "x":
-//     "y":
-//     "series":
-//   }
+//   },
+//   "series":"name",
+//   "points":[
+//     [1,3],
+//     [2,0],
+//     [4,1]
+//   ]
 // }

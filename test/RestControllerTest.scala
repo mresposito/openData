@@ -19,16 +19,24 @@ trait TestData {
   val newGraph = NewGraph("simpleGraph", USERID, None)
   val simpleGraph = CreateGraph(newGraph, None)
 
+  val simpleDataPoint = DataPoint("10", 4, None)
+
   def dump[T](point: T) = Json.toJson(simpleGraph)
+
+  def loadGraphs(store: DataStore) = {
+    store.createGraph(newGraph)
+  }
 }
 
 class RestControllerTest extends TestData {
 
+  var store: DataStore = _
   var controller: DataController = _
 
   @Before
   def setup = {
-    controller = new DataController 
+    store = mock(classOf[DataStore])
+    controller = new DataController(store)
   }
 
   def request(method: String, location:String, json: JsValue) = 

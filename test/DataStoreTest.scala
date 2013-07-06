@@ -19,12 +19,23 @@ class DataStoreTest extends TestData {
   }
 
   @Test
-  def insertAndRetrieveSingle {
+  def insertAndRetrieveGraph {
     running(FakeApplication()) {
       store.createGraph(newGraph)  
       val graphs = store.getGraphs(USERID)
       assertEquals(1, graphs.length)
       assertEquals(newGraph.name, graphs.head.name)
+    }
+  }
+
+  @Test
+  def insertAndRetrieveDataPoints {
+    running(FakeApplication()) {
+      val id = loadGraphs(store)
+      store.createDataPoint(id, simpleDataPoint)
+      val points = store.getDataPoints(id)
+      assertEquals(1, points.length)
+      assertEquals(simpleDataPoint.x, points.head.x)
     }
   }
 }

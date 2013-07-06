@@ -9,25 +9,28 @@ CREATE TABLE graphs(
   deleted int DEFAULT 0
 );
 
-CREATE TABLE event(
+CREATE TABLE series(
   id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(1000) NOT NULL,
-  url VARCHAR(250) NOT NULL,
-  author VARCHAR(250) NOT NULL,
-  author_id BIGINT(20),
-  content VARCHAR(4000) NOT NULL,
-  timestamp BIGINT(20),
-  duration INT(14) DEFAULT 0,
-  thread INT(14) DEFAULT 0,
-  parent INT(14) DEFAULT 0,
-  relevance INT(14) DEFAULT 0,
+  graph_id BIGINT(20) NOT NULL, 
+  name VARCHAR(10),
   deleted int DEFAULT 0
 );
 
+CREATE TABLE data_points(
+  id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  graph_id BIGINT(20) NOT NULL, 
+  series_name VARCHAR(10),
+  x VARCHAR(40) NOT NULL,
+  y INT(15) NOT NULL,
+  deleted int DEFAULT 0
+);
+
+CREATE INDEX data_point_id ON data_points(id);
+CREATE INDEX series_id ON series(id);
 CREATE INDEX graphs_id ON graphs(id);
--- CREATE INDEX event_id ON event(id);
 
 # --- !Downs
 
--- DROP TABLE meta_event;
+DROP TABLE series;
+DROP TABLE data_points;
 DROP TABLE graphs;
