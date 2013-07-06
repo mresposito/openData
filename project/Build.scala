@@ -10,7 +10,10 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     jdbc,
-    anorm
+    anorm,
+    "org.mockito" % "mockito-all" % "1.9.5" % "test",
+    "com.google.inject" % "guice" % "3.0",
+    "com.typesafe" %% "scalalogging-slf4j" % "1.0.1"
   )
 
 
