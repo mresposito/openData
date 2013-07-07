@@ -6,46 +6,24 @@
 
 @main("Feed", js) {
 
-    <style>
-      div.feedBox {
-        border: 1px solid rgb(221, 221, 221);
-        border-radius: 4px 4px 4px 4px;
-        width: 100%;
-      }
+<!-- Main Div ================================================= -->
+<div class="span12 graph-row">
+  <div class="row">
 
-      li.event {
-        margin-bottom: 40px;
-      }
-    </style>
-    
-    <!-- Main Div ================================================= -->
-    <div class="span12 graph-row">
-      <div class="row">
-      <!-- Sidebar ================================================== -->
-        <div class="span2 graph-sidebar">
-          <li style="visibility: hidden;"><a href="#"></a></li>
-        </div>
-        <div class="span10 graph-body">
-          You have no graphs yet
-        </div>
+    <!-- Sidebar ================================================== -->
+    <div class="span2 graph-sidebar">
+      <li style="visibility: hidden;"><a href="#"></a></li>
+    </div> <!-- end sidebar -->
+
+    <!-- Body ================================================== -->
+    <div class="span10 graph-body">
+      You have no graphs yet
+      <div class="demo-container">
+        <div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
+        <p id="choices" style="float:right; width:135px;"></p>
       </div>
-    </div>
-    <!-- <div class="row&#45;fluid"> -->
-    <!--   <div class="span3"> -->
-    <!--   </div> -->
-    <!--   <div class="span9" style="padding&#45;top: 30px;"> -->
-    <!--     <textarea rows="4" class="input&#45;full" placeholder="Talk to me"></textarea> -->
-    <!--   </div> -->
-    <!-- </div> -->
+    </div> <!-- end graph body -->
 
-    <!--   <div class="row&#45;fluid" style="margin&#45;top: 20px;"> -->
-    <!--     <div class="span3"> -->
-    <!--     </div> -->
-
-    <!--   <!&#45;&#45; News feed ================================================== &#45;&#45;> -->
-    <!--     <div class="span9 newsFeed"> -->
-    <!--       <ul class="unstyled"> -->
-    <!--       </ul> -->
-    <!--     </div> -->
-    <!--   </div> -->
+  </div>
+</div> <!-- end main div -->
 }
