@@ -49,9 +49,13 @@ class DataController @Inject() (dataStore: DataStore) extends Controller {
     Ok(Json.toJson(plots))
   }
 
-  def post = Action(parse.json) { request =>
+  def post(userId: Long) = Action(parse.json) { request =>
     request.body.validate[CreateGraph].map {
       case create => {
+        val id = dataStore.getOrCreate(userId, create.graph)
+        create.data.map{ data =>
+          dataStore.createDataPoints(id, data, create.series)
+        }
         Response("graph recieved")
       }
     }.recoverTotal{

@@ -21,7 +21,7 @@ class DataStoreTest extends TestData {
   @Test
   def insertAndRetrieveGraph {
     running(FakeApplication()) {
-      store.createGraph(newGraph)  
+      store.createGraph(USERID, newGraph)  
       val graphs = store.getGraphs(USERID)
       assertEquals(1, graphs.length)
       assertEquals(newGraph.name, graphs.head.name)
@@ -36,6 +36,16 @@ class DataStoreTest extends TestData {
       val points = store.getDataPoints(id)
       assertEquals(1, points.length)
       assertEquals(simpleDataPoint.x, points.head.x)
+    }
+  }
+
+  @Test
+  def findGraph {
+    running(FakeApplication()) {
+      val id = loadGraphs(store)
+      val retGraph = store.getGraph(USERID, newGraph.name)
+      assertTrue(retGraph.isDefined)
+      assertEquals(id, retGraph.get.id)
     }
   }
 }

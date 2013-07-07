@@ -16,7 +16,7 @@ trait TestData {
   
   val USERID = 0
   
-  val newGraph = NewGraph("simpleGraph", USERID, None)
+  val newGraph = NewGraph("simpleGraph", None)
   val simpleGraph = CreateGraph(newGraph, None)
 
   val simpleDataPoint = DataPoint("10", 4, None)
@@ -24,7 +24,7 @@ trait TestData {
   def dump[T](point: T) = Json.toJson(simpleGraph)
 
   def loadGraphs(store: DataStore) = {
-    store.createGraph(newGraph)
+    store.createGraph(USERID, newGraph)
   }
 }
 
@@ -48,15 +48,12 @@ class RestControllerTest extends TestData {
   
   // @Test
   // def basicPost = {
-  //   val r = controller.post(restRequest(POST, dump(simpleGraph))).fold {
-  //     case Step.Done(req, _) =>
-  //       assertEquals(status(req), 200)
-  //   }
-    // assertEquals(r.length, 1)
-    // val req = r.head
-    // assertEquals(status(req), 200)
+  //   running(FakeApplication()) {
+  //     val req = route(restRequest(POST, dump(simpleGraph))).get
+  //     assertEquals(status(req), 200)
     // assertTrue(req.get.content contains "graph recieved")
     // assertTrue(req.get.body contains "graph recieved")
+  //   }
   // }
 
   // @Test

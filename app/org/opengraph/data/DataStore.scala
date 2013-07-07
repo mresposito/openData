@@ -13,7 +13,7 @@ import play.api.libs.json.Json
 
 case class Graph (id: Long, userId: Long, name:String, render:String, description: Option[String])
 
-case class NewGraph (name: String, userId: Long, description: Option[String], render:String = "line" )
+case class NewGraph (name: String, description: Option[String], render:String = "line" )
 
 case class DataPoint(x: String, y: Int, series: Option[String])
 
@@ -57,10 +57,10 @@ class DataStore @Inject() {
           | VALUES
           | ({userId}, {name}, {render}, {description})""".stripMargin)
     
-  def createGraph(newGraph: NewGraph) = {
+  def createGraph(userId: Long, newGraph: NewGraph) = {
     db.withConnection{ implicit connection =>
       createGraphSql.on(
-        'userId -> newGraph.userId,
+        'userId -> userId,
         'name -> newGraph.name,
         'render -> newGraph.render,
         'description -> newGraph.description.getOrElse("")
@@ -82,6 +82,39 @@ class DataStore @Inject() {
     }
   }
 
+
+  private[this] val getGraphSql = 
+    SQL("""  SELECT id, user_id, name, render, description
+          |    FROM graphs
+          |   WHERE user_id = {userId}
+          |     AND name = {name}
+          |     AND deleted = 0
+          |ORDER BY  id""".stripMargin)
+
+  /**
+   * Retrieve a single unique graph
+   * by using the user Id and the name of that graph
+   */
+  def getGraph(userId: Long, name: String) = {
+    db.withConnection { implicit connection =>
+      getGraphSql.on(
+        'userId -> userId,
+        'name -> name).as(graphParser.singleOpt)
+    }
+  }
+
+  /**
+   * Gets or create a specific graph.
+   * Returns the Id of the graph
+   */
+  def getOrCreate(userId: Long, newGraph: NewGraph) = {
+    val graph = getGraph(userId, newGraph.name)
+    if(graph.isDefined) {
+      graph.get.id
+    } else {
+      createGraph(userId, newGraph)
+    }
+  }
   // private[this] val createSeriesSql = 
   //   SQL(""" INSERT INTO series
   //           (graph_id, name)
@@ -94,13 +127,19 @@ class DataStore @Inject() {
             VALUES
             ({graphId}, {seriesName}, {x}, {y})""".stripMargin)
 
-  def createDataPoint(graphId: Long, dataPoint: DataPoint) = {
+  def createDataPoint(graphId: Long, dataPoint: DataPoint, series:String = "") = {
     db.withConnection{ implicit connection =>
       createDataPointSql.on(
         'graphId -> graphId,
         'x -> dataPoint.x,
         'y -> dataPoint.y,
-        'seriesName -> dataPoint.series.getOrElse("")).executeInsert(scalar[Long].single)
+        'seriesName -> series).executeInsert(scalar[Long].single)
+    }
+  }
+
+  def createDataPoints(graphId: Long, dataPoints: Seq[DataPoint], series: String = "") = {
+    dataPoints.map{ point =>
+      createDataPoint(graphId, point, series)
     }
   }
 

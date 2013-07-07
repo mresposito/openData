@@ -8,7 +8,7 @@ GET     /                           controllers.Application.index
 ## Data API
 
 GET     /v1/data/:id                @org.opengraph.data.DataController.get(id: Long)
-POST    /v1/data                    @org.opengraph.data.DataController.post
+POST    /v1/data/:id                @org.opengraph.data.DataController.post(id: Long)
 # PUT     /v1/data                    controllers.Data.put
 # DELETE  /v1/data                    controllers.Data.delete
 
