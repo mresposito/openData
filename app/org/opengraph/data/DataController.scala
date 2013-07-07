@@ -29,6 +29,12 @@ class DataController extends Controller {
   def Response(message: String) = Ok(Json.toJson(Success(message)))
 
   
+  def sortPlot(plot: Plot): Plot = {
+    val series = plot.series.sortBy{ ser =>
+      ser.data.map( _.y ).sum
+    }
+    Plot(plot.graph, series.reverse take 10)
+  }
   /**
    * serves all the graphs for a given user
    * The return object is a sequence
@@ -47,7 +53,9 @@ class DataController extends Controller {
     val plots = graphs.zip(dataSeries).map {
       case(g, d) => Plot(g, d toList)
     }
-    Ok(Json.toJson(plots))
+    val sorted = plots.map(sortPlot)
+
+    Ok(Json.toJson(sorted))
   }
 
   def post(userId: Long) = Action(parse.json) { request =>
