@@ -39,13 +39,13 @@ require ([
   "underscore",
   "backbone",
   "collections/Graphs",
-  "views/GraphSuper"
-], function($, _, Backbone, GraphLoader, GraphSuper) {
+  "views/GraphManager"
+], function($, _, Backbone, GraphLoader, GraphManager) {
 
   el = $(".graph-row")
 
   new GraphLoader(function(collection){
-    new GraphSuper({
+    new GraphManager({
       el: el,
       collection: collection
     });
