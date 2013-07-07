@@ -20,9 +20,10 @@ object DataFormatter {
   implicit val plotFormatter = Json.format[Plot]
 }
 
-@Singleton
-class DataController @Inject() (dataStore: DataStore) extends Controller {
+// @Singleton
+class DataController extends Controller {
 
+  val dataStore: DataStore = new DataStore
   import DataFormatter._
 
   def Response(message: String) = Ok(Json.toJson(Success(message)))

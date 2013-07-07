@@ -35,8 +35,8 @@ class RestControllerTest extends TestData {
 
   @Before
   def setup = {
-    store = mock(classOf[DataStore])
-    controller = new DataController(store)
+    // store = mock(classOf[DataStore])
+    controller = new DataController()
   }
 
   def request(method: String, location:String, json: JsValue) = 
@@ -44,17 +44,17 @@ class RestControllerTest extends TestData {
       .withHeaders(("Content-Type", "application/json"))
       .withJsonBody(json)
 
-  def restRequest(method: String, json: JsValue) = request(method, "/v1/data", json)
+  def restRequest(method: String, json: JsValue) = request(method, "/v1/data/0", json)
   
-  // @Test
-  // def basicPost = {
-  //   running(FakeApplication()) {
-  //     val req = route(restRequest(POST, dump(simpleGraph))).get
-  //     assertEquals(status(req), 200)
-    // assertTrue(req.get.content contains "graph recieved")
-    // assertTrue(req.get.body contains "graph recieved")
-  //   }
-  // }
+  @Test
+  def basicPost = {
+    running(FakeApplication()) {
+      val req = route(restRequest(POST, dump(simpleGraph))).get
+      assertEquals(status(req), 200)
+      // assertTrue(contentAsText(req) contains "graph recieved")
+      // assertTrue(req.body contains "graph recieved")
+    }
+  }
 
   // @Test
   // def variousPost = {

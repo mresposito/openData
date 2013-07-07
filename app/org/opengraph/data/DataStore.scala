@@ -133,7 +133,7 @@ class DataStore @Inject() {
         'graphId -> graphId,
         'x -> dataPoint.x,
         'y -> dataPoint.y,
-        'seriesName -> series).executeInsert(scalar[Long].single)
+        'seriesName -> dataPoint.series.getOrElse(series)).executeInsert(scalar[Long].single)
     }
   }
 

@@ -19,7 +19,7 @@ CREATE TABLE series(
 CREATE TABLE data_points(
   id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   graph_id BIGINT(20) NOT NULL, 
-  series_name VARCHAR(10),
+  series_name VARCHAR(100),
   x VARCHAR(40) NOT NULL,
   y INT(15) NOT NULL,
   deleted int DEFAULT 0
