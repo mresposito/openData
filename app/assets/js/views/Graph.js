@@ -12,9 +12,7 @@ define ([
     },
 
     initialize: function(){
-      $(this.el).html(EventHTML(
-          {model: this.model})
-        );
+      console.log("TTH")
     }
 
   });

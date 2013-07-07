@@ -22,26 +22,17 @@ require.config({
 require ([
   "jquery",
   "underscore",
-  "backbone"
-], function($, _, Backbone) {
+  "backbone",
+  "collections/Graphs",
+  "views/GraphSuper"
+], function($, _, Backbone, GraphLoader, GraphSuper) {
 
-  var list = $("ul.unstyled")
-  require(["collections/Graphs", "views/Graph"], function(GraphLoader, GraphView) {
-    new GraphLoader(function(collection){
-      collection.each(function(model){
-        if(model.get("graph") != null) {
-          console.log(model.get("graph").name)
-        }
-        // if(model.get("title") != null) {
-        //   var newLi = $('<li class="event"></li>') 
-        //   list.append(newLi)
-        //   newLi = list.find("li").last()
-        //   new EventView({
-        //     el: newLi,
-        //     model: model
-        //   });
-        // }
-      });
+  el = $(".graph-row")
+
+  new GraphLoader(function(collection){
+    new GraphSuper({
+      el: el,
+      collection: collection
     });
   });
 });
