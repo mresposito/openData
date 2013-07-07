@@ -3,7 +3,7 @@
 CREATE TABLE graphs(
   id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id BIGINT(20) NOT NULL,
-  name VARCHAR(40) NOT NULL,
+  name VARCHAR(40) NOT NULL UNIQUE,
   render VARCHAR(15),
   description VARCHAR(1000),
   deleted int DEFAULT 0
