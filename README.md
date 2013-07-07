@@ -6,11 +6,14 @@ The world's most flexible online data dashboard
 
 ## Usage
 
-...
+Plot data without limits!
 
 ## Installation
 
-...
+To run this website locally, simply clone the repo, then if you have play installed, run
+  play run
+otherwise, use sbt
+  sbt run
 
 ## Requirements
 
@@ -22,9 +25,13 @@ See CONTRIBUTING file.
 
 ## Running the Tests
 
+Simply run
 
+  play test
 
-## Credits
+in order to run the full test suit. Yes, Play is super awesome!
+
+> ## Credits
 
 
 
