@@ -1,0 +1,51 @@
+@(message: String)
+
+@js = {
+  @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("js/graphApp").url)
+}
+
+@main("Feed", js) {
+
+    <style>
+      div.feedBox {
+        border: 1px solid rgb(221, 221, 221);
+        border-radius: 4px 4px 4px 4px;
+        width: 100%;
+      }
+
+      li.event {
+        margin-bottom: 40px;
+      }
+    </style>
+    
+    <!-- Main Div ================================================= -->
+    <div class="span12">
+      <div class="row">
+      <!-- Sidebar ================================================== -->
+        <div class="span2 graph-sidebar">
+          Not even here :(
+        </div>
+        <div class="span10 graph-home">
+          You have no graphs yet
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row&#45;fluid"> -->
+    <!--   <div class="span3"> -->
+    <!--   </div> -->
+    <!--   <div class="span9" style="padding&#45;top: 30px;"> -->
+    <!--     <textarea rows="4" class="input&#45;full" placeholder="Talk to me"></textarea> -->
+    <!--   </div> -->
+    <!-- </div> -->
+
+    <!--   <div class="row&#45;fluid" style="margin&#45;top: 20px;"> -->
+    <!--     <div class="span3"> -->
+    <!--     </div> -->
+
+    <!--   <!&#45;&#45; News feed ================================================== &#45;&#45;> -->
+    <!--     <div class="span9 newsFeed"> -->
+    <!--       <ul class="unstyled"> -->
+    <!--       </ul> -->
+    <!--     </div> -->
+    <!--   </div> -->
+}

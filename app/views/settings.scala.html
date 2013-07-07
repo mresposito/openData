@@ -1,0 +1,41 @@
+@(message: String)
+
+@js = {
+
+  <script type="text/javascript">
+
+    function toggleTop(path) {
+      el = $("ul.nav")
+      el.find(".active").removeClass("active")
+      el.find("a[href='" + path + "']").parent().addClass("active")
+    }
+
+    toggleTop("/settings")
+  </script>
+
+  @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("js/settingsMain").url)
+}
+
+@main("Settings", js) {
+
+<div class="tabbable tabs-left">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#/rss" data-toggle="tab">RSS</a></li>
+    <li><a href="#/user" data-toggle="tab">User</a></li>
+    <li><a href="#/admin" data-toggle="tab">Admin</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="lA">
+      <p>I'm in Section A.</p>
+    </div>
+    <div class="tab-pane" id="lB">
+      <p>Howdy, I'm in Section B.</p>
+    </div>
+    <div class="tab-pane" id="lC">
+      <p>What up girl, this is Section C.</p>
+    </div>
+  </div>
+
+</div>
+}
