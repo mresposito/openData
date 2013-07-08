@@ -8,19 +8,12 @@ define ([
 
     initialize: function(){
       self = this
-
       var series = this.model.get("series")
-      var datasets = {}
 
       this.loadHtml()
+      this.table = $(this.el).find("table")
 
-      _.map(series, function(data) {
-        label = data.name
-        datasets[label] = {
-          label: label,
-          data : self.flattenData(data.data)
-        }
-      });
+      var datasets = this.model.makeDataset(this.flattenData)
 
       this.plotDatasets(datasets)
       this.resumeData(datasets)
@@ -58,6 +51,18 @@ define ([
 
     setTitle: function() {
       $(this.el).prepend("<h1>" + this.model.get("graph").name + "</h1>")
+    },
+
+    formatTable: function(array) {
+      str = ""
+      _.map(array, function(el) {
+        str += "<td>" + el + "</td>"
+      })
+      return "<tr>" + str + "</tr>"
+    },
+
+    formatTableHeader: function(array) {
+      return this.formatTable(array).replace(/td/g,"th")
     }
   });
 });

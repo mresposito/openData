@@ -36,20 +36,25 @@ define ([
       
     },
 
+    /**
+     * Recieves the event of toggling a new graph
+     * and loads the new view
+     */
     changeGraph: function(actor) {
-      self = this
       var target =  $(actor.target)
       var name = target.text()
 
-      this.collection.each(function(model) {
-        graph = model.get("graph")
-        if(graph != null && graph.name === name) {
-          self.verifyAndLoad(model)
-        }
-      });
-
+      var collectionToLoad = this.collection.findByName(name)
+      if(collectionToLoad != null) {
+        this.verifyAndLoad(collectionToLoad)
+      }
     },
 
+    /**
+     * Check that we are loading a new model.
+     * If the model is the same as we have in memory,
+     * then do nothing.
+     */
     verifyAndLoad: function(model) {
       if(this.model.get("graph").name === model.get("graph").name){
         return
@@ -58,6 +63,9 @@ define ([
       }
     },
 
+    /**
+     * Assigns a new model to the graph
+     */
     loadModel: function(model) {
       this.model = model
       this.makeGraph(model)
@@ -67,14 +75,14 @@ define ([
       var graphType = model.get("graph").render
       var View = LineGraph
 
-      console.log(graphType)
       if(graphType === "stack") {
         View = BarGraph
       } 
 
       return new View({
         el: this.body,
-        model: model
+        model: model,
+        collection: this.collection
       })
     }
   });

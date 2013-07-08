@@ -16,6 +16,17 @@ define ([
         });
         callback(self);
       });
+    },
+
+    findByName: function(name) {
+      var mol = null
+      this.each(function (model) {
+        graph = model.get("graph")
+        if(graph != null && graph.name === name) {
+          mol = model
+        }
+      });
+      return mol;
     }
   });
 });

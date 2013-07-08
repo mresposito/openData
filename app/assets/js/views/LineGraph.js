@@ -17,6 +17,56 @@ define ([
         + '  <p id="choices" style="float:right; width:10%;"></p>'
         + '</div>'
         + '<div id="overview" class="demo-placeholder" style="height:150px; margin-top: 550px;"></div>'
+        + '<table class="table table-striped display-table">'
+        + '</table>'
+    },
+
+    loadCounterModel: function() { // little hack, remove hard coding
+      var activation = "Activation from Referrer"
+      var refer = "Referrer Count"
+      if(this.model.name() === activation) {
+        return this.collection.findByName(refer)
+      } else if (this.model.name() === refer){
+        return this.collection.findByName(activation)
+      } else {
+        return null
+      }
+    },
+
+    formatHead: function() {
+      var ratio = ""
+      if(this.model.name() === "Activation from Referrer") {
+        ratio = "Activation/Refer"
+      } else {
+        ratio = "Refer/Activation"
+      }
+      this.table.append(
+          this.formatTableHeader(["Name of referrer", "Count", ratio]))
+    },
+
+    resumeData: function(datasets) {
+      function showPercent(numerand, dividend) {
+        if(dividend != null && numerand != null)
+          return (((numerand*1.0)/dividend).toFixed(4)*100) + "%"
+        return "Not avaliable"
+      }
+      self = this      
+      var counterModel = this.loadCounterModel()
+      var counterDataset = counterModel.makeDataset(this.flattenData)
+      this.formatHead()
+      
+      _.map(datasets, function(series) {
+        var tot = self.model.totalBySeries(series)
+        var counterTot = counterModel.findTotalSeries(counterDataset, series.label)
+        var perCent = null
+        if(self.model.name() === "Activation from Referrer") {
+          perCent = showPercent(tot, counterTot)
+        } else {
+          perCent = showPercent(counterTot, tot)
+        }
+        self.table.append(
+          self.formatTable([series.label, tot, perCent]))
+      })
     },
 
     plotDatasets: function(datasets) {

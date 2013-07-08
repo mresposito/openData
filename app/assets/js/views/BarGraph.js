@@ -28,12 +28,12 @@ define ([
 
     resumeData: function (datasets) {
       var data = _.sortBy(datasets.none.data, function(el) { return el[1]; }).reverse()
-      var table = $(this.el).find("table")
+      var table = this.table
       table.append(
           "<thead><tr><th>Name of query</th><th>Count</th></tr></thead>")
       _.map(data, function(point) {
         table.append(
-          '<tr><td>' + point[0] + '</td><td>' + point[1] + '</td></tr>')
+          self.formatTable(point))
       })
     }
   });
