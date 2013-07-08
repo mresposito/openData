@@ -2,8 +2,9 @@ define ([
   "jquery",
   "underscore",
   "backbone",
-  "views/Graph"
-], function($, _, Backbone, Graph) {
+  "views/LineGraph",
+  "views/BarGraph"
+], function($, _, Backbone, LineGraph, BarGraph) {
 
   return Backbone.View.extend({
 
@@ -63,7 +64,15 @@ define ([
     },
 
     makeGraph: function(model) {
-      return new Graph({
+      var graphType = model.get("graph").render
+      var View = LineGraph
+
+      console.log(graphType)
+      if(graphType === "stack") {
+        View = BarGraph
+      } 
+
+      return new View({
         el: this.body,
         model: model
       })

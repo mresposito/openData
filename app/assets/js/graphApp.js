@@ -6,7 +6,8 @@ require.config({
     jsApi: "/assets/js/jsapi",
     flot: "/assets/js/jquery.flot.min",
     flotTime: "/assets/js/jquery.flot.time.min",
-    flotSelect: "/assets/js/jquery.flot.selection.min"
+    flotSelect: "/assets/js/jquery.flot.selection.min",
+    flotCategories: "/assets/js/jquery.flot.categories.min"
   },
   shim: {
     jquery: {
@@ -30,6 +31,10 @@ require.config({
     flotSelect: {
       deps: ["jquery", "flot", "flotTime"],
       exports: "FlotSelect"
+    },
+    flotCategories: {
+      deps: ["jquery", "flot"],
+      exports: "FlotCategories"
     }
   }
 });

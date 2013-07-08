@@ -10,6 +10,7 @@ import anorm.SqlParser._
 import javax.inject.Singleton
 import javax.inject.Inject
 import play.api.libs.json.Json
+import com.typesafe.scalalogging.slf4j.Logging
 
 case class Graph (id: Long, userId: Long, name:String, render:String, description: Option[String])
 
@@ -24,7 +25,7 @@ case class Series(name: String, data: Seq[DataPoint])
 case class Plot(graph: Graph, series: Seq[Series])
 
 @Singleton
-class DataStore @Inject() {
+class DataStore @Inject() extends Logging {
 
   /**
    * Use variable in case
@@ -139,7 +140,11 @@ class DataStore @Inject() {
 
   def createDataPoints(graphId: Long, dataPoints: Seq[DataPoint], series: String = "") = {
     dataPoints.map{ point =>
-      createDataPoint(graphId, point, series)
+      try {
+        createDataPoint(graphId, point, series)
+      } catch {
+        case e => logger.error("Storing point", e)
+      }
     }
   }
 

@@ -5,36 +5,18 @@ define ([
   "flot",
   "flotTime",
   "flotSelect",
-  "views/Graph.html"
-], function($, _, Backbone, Flot, FlotTime, FlotSelect, EventHTML) {
+  "views/GraphSuper"
+], function($, _, Backbone, Flot, FlotTime, FlotSelect, GraphSuper) {
 
-  function flattenData(data) {
-    var el =  _.map(data, function(point) {
-      return ([parseInt(point.x)*1000, point.y])
-    });
+  return GraphSuper.extend({
 
-    return _.sortBy(el, function(point) {
-      return point[0]
-    });
-  }
-
-  return Backbone.View.extend({
-
-    events: {
-    },
-
-    initialize: function(){
-      var series = this.model.get("series")
-      var datasets = {}
-      _.map(series, function(data) {
-        label = data.name
-        datasets[label] = {
-          label: label,
-          data : flattenData(data.data)
-        }
-      });
-
-      this.plotDatasets(datasets)
+    htmlString: function(datasets) {
+      return ""
+        + '<div class="demo-container">'
+        + '  <div id="placeholder" class="demo-placeholder" style="float:left; width:90%; height: 500px;"></div>'
+        + '  <p id="choices" style="float:right; width:10%;"></p>'
+        + '</div>'
+        + '<div id="overview" class="demo-placeholder" style="height:150px; margin-top: 550px;"></div>'
     },
 
     plotDatasets: function(datasets) {
